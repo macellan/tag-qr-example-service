@@ -1,0 +1,13 @@
+.idea
+
+# macOS
+.DS_Store
+
+# Dev build
+tmp/
+main
+
+.env
+
+# Test
+*.out

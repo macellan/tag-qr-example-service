@@ -1,6 +1,6 @@
 # Tag-QR Service API Example
 
-This repo contains sample codes to integrate with Alternatif SuperApp Tag-QR technology. You can refer to the integration document for details.
+This repo contains sample codes to integrate with Macellan SuperApp Tag-QR technology. You can refer to the integration document for details.
 
 ## Run
 

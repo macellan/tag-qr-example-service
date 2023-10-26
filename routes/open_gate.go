@@ -50,7 +50,7 @@ func OpenGate(c *fiber.Ctx) error {
 	go pingCallbackSuccess(r)
 
 	// if something went wrong call fail
-	// defer pingCallbackSuccess(r)
+	// defer pingCallbackFail(r)
 
 	// If you have successfully received the request, you should return status code 200.
 	// It is not a value depending on whether you open the door or not. You simply verify that you have received the request.

@@ -6,8 +6,8 @@ import (
 	"strings"
 )
 
-func hash(sb []string) string {
-	s := strings.Join(sb, "")
+func hash(data []string) string {
+	s := strings.Join(data, "")
 
 	hasher := sha1.New()
 	hasher.Write([]byte(s))

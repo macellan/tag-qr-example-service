@@ -6,10 +6,10 @@ import (
 	"os"
 )
 
-// PriceRequest Alternatif SuperApp will come up with these values to query the amount.
+// PriceRequest Macellan SuperApp will come up with these values to query the amount.
 type PriceRequest struct {
 	RefCode string `json:"ref_code"` // RefCode is the Tag-QR reference code.
-	Hash    string `json:"hash"`     // Hash required to verify that the request was sent by the Alternatif SuperApp
+	Hash    string `json:"hash"`     // Hash required to verify that the request was sent by the Macellan SuperApp
 	UserId  string `json:"user_id"`  // UserId of the user who read the QR
 	OrderId string `json:"order_id"` // OrderId is the unique ID of the Alternate SuperApp side of the payment transaction.
 }
@@ -21,19 +21,19 @@ type PriceSuccessResponse struct {
 
 // PriceFailResponse If you want to return the answer as an error, it must be answered with the following values.
 type PriceFailResponse struct {
-	Message     string `json:"message,omitempty"`      // This is the Message you will send to Alternatif SuperApp API.
+	Message     string `json:"message,omitempty"`      // This is the Message you will send to Macellan SuperApp API.
 	UserMessage string `json:"user_message,omitempty"` // UserMessage is the message you want to show the user. Can be null
 }
 
 func GetPrice(c *fiber.Ctx) error {
-	r := new(PriceRequest)
+	request := new(PriceRequest)
 
-	if err := c.BodyParser(r); err != nil {
+	if err := c.BodyParser(request); err != nil {
 		return err
 	}
 
-	if verifyHash(r) == false {
-		// All operations other than code 200 are considered as failed requests by Alternatif SuperApp.
+	if !verifyPriceRequestHash(request) {
+		// All operations other than code 200 are considered as failed requests by Macellan SuperApp.
 		return c.Status(fiber.StatusForbidden).
 			JSON(PriceFailResponse{
 				Message: "Hash is invalid",
@@ -41,7 +41,7 @@ func GetPrice(c *fiber.Ctx) error {
 	}
 
 	// Here you can calculate the amount to be deducted from the balance.
-	price := calcPrice()
+	price := calculatePrice()
 
 	return c.Status(fiber.StatusOK).
 		JSON(PriceSuccessResponse{
@@ -49,24 +49,24 @@ func GetPrice(c *fiber.Ctx) error {
 		})
 }
 
-// verifyHash Verifies that the request to the service was sent by Alternatif SuperApp.
-func verifyHash(r *PriceRequest) bool {
+// verifyPriceRequestHash Verifies that the request to the service was sent by Macellan SuperApp.
+func verifyPriceRequestHash(request *PriceRequest) bool {
 	s := []string{
-		r.RefCode,
-		r.UserId,
-		r.OrderId,
+		request.RefCode,
+		request.UserId,
+		request.OrderId,
 		os.Getenv("SALT"),
 	}
 
-	cHash := hash(s)
+	calculatedHash := hash(s)
 
-	// println("Request Hash => ", r.Hash)
-	// println("Calculated Hash => ", cHash)
+	// println("Request Hash => ", request.Hash)
+	// println("Calculated Hash => ", calculatedHash)
 
-	return r.Hash == cHash
+	return request.Hash == calculatedHash
 }
 
 // This is a sample code written so that it doesn't always look the same.
-func calcPrice() float32 {
+func calculatePrice() float32 {
 	return 1 + rand.Float32()*(10-1)
 }

@@ -13,7 +13,7 @@ var (
 	port = flag.String("port", ":4004", "Port to listen on")
 )
 
-// This sample application has been written to easily explain how to integrate Alternatıf SuperApp Tag-QR.
+// This sample application has been written to easily explain how to integrate Macellan SuperApp Tag-QR.
 // Explains sample requests and hash validations with examples.
 func main() {
 	loadEnv()

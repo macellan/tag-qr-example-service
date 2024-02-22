@@ -11,7 +11,7 @@ type PriceRequest struct {
 	RefCode string `json:"ref_code"` // RefCode is the Tag-QR reference code.
 	Hash    string `json:"hash"`     // Hash required to verify that the request was sent by the Macellan SuperApp
 	UserId  string `json:"user_id"`  // UserId of the user who read the QR
-	OrderId string `json:"order_id"` // OrderId is the unique ID of the Alternate SuperApp side of the payment transaction.
+	OrderId string `json:"order_id"` // OrderId is the unique ID of the Macellan SuperApp side of the payment transaction.
 }
 
 // PriceSuccessResponse Amount response should be given with the following structure.
